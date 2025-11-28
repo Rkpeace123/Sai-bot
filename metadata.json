@@ -1,0 +1,7 @@
+{
+  "name": "Sairam University",
+  "description": "A modern, comprehensive university portal featuring online admissions, fee payments, bus tracking, and student dashboards.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
