@@ -29,6 +29,9 @@ A world-class, modern university portal designed with a focus on UX/UI, accessib
 ## 🏁 Getting Started
 
 1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Rkpeace123/Sairam.git
+   ```
 2. **Open `index.html`** in a modern browser (or serve via a local static server).
 3. **Explore** the various portals (Student Login, Admissions, Transport).
 

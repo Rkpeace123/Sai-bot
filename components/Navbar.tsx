@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, CreditCard, Bus, Search, GraduationCap } from 'lucide-react';
+import { Menu, X, ChevronDown, User, CreditCard, Bus, Search, GraduationCap, Users } from 'lucide-react';
 import { NAV_ITEMS } from '../constants';
 
 const Navbar: React.FC = () => {
@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       {/* Top Bar - Ivy League Style */}
-      <div className="bg-sairam-900 text-slate-300 text-[11px] font-medium py-2 px-6 hidden lg:flex justify-between items-center tracking-widest uppercase border-b border-white/5">
+      <div className="bg-sairam-900 text-slate-300 text-[11px] font-medium py-2 px-6 hidden lg:flex justify-between items-center tracking-widest uppercase border-b border-white/5 relative z-50">
         <div className="flex space-x-6">
           <Link to="/admissions" className="hover:text-gold-400 cursor-pointer transition">Admissions Open 2025</Link>
           <span className="text-slate-700">|</span>
@@ -33,7 +33,10 @@ const Navbar: React.FC = () => {
           <span className="text-slate-700">|</span>
           <Link to="/research" className="hover:text-gold-400 cursor-pointer transition">Research</Link>
         </div>
-        <div className="flex space-x-6">
+        <div className="flex space-x-6 items-center">
+          <Link to="/track-bus" className="hover:text-gold-400 transition flex items-center gap-1"><Bus size={12}/> Bus</Link>
+          <Link to="/pay-fees" className="hover:text-gold-400 transition flex items-center gap-1"><CreditCard size={12}/> Fees</Link>
+          <span className="text-slate-700">|</span>
           <Link to="/login?role=alumni" className="hover:text-white transition">Alumni</Link>
           <Link to="/login?role=parent" className="hover:text-white transition">Parents</Link>
           <Link to="/login?role=faculty" className="hover:text-white transition">Faculty</Link>
@@ -177,6 +180,10 @@ const Navbar: React.FC = () => {
                  <Link to="/login?role=faculty" className="flex flex-col items-center justify-center p-4 bg-blue-50 rounded-lg text-center border border-blue-100">
                     <User size={24} className="mb-2 text-blue-700" />
                     <span className="text-xs font-bold text-slate-700">Staff Portal</span>
+                 </Link>
+                 <Link to="/login?role=parent" className="flex flex-col items-center justify-center p-4 bg-purple-50 rounded-lg text-center border border-purple-100">
+                    <Users size={24} className="mb-2 text-purple-700" />
+                    <span className="text-xs font-bold text-slate-700">Parent Portal</span>
                  </Link>
                  <Link to="/pay-fees" className="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-lg text-center">
                     <CreditCard size={24} className="mb-2 text-sairam-900" />
