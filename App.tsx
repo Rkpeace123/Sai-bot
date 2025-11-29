@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -8,19 +9,21 @@ import Placements from './pages/Placements';
 import BusTracking from './pages/BusTracking';
 import FeePayment from './pages/FeePayment';
 import StudentPortal from './pages/StudentPortal';
+import FacultyPortal from './pages/FacultyPortal';
+import ParentPortal from './pages/ParentPortal';
+import Login from './pages/Login';
 import Academics from './pages/Academics';
 import About from './pages/About';
 import Research from './pages/Research';
 import Campus from './pages/Campus';
 import Contact from './pages/Contact';
 import Department from './pages/Department';
-// Remove MessageSquare import as we are using external Zoho Chatbot
-// import { MessageSquare } from 'lucide-react';
 
 // Wrapper to conditionally render Header/Footer
 const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const isPortal = location.pathname.startsWith('/portal');
+  // Don't show public navbar/footer on portal pages or login
+  const isPortal = location.pathname.startsWith('/portal') || location.pathname.startsWith('/login');
 
   // Scroll to top on route change
   React.useEffect(() => {
@@ -34,8 +37,6 @@ const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         {children}
       </div>
       {!isPortal && <Footer />}
-      
-      {/* Floating Chatbot - Replaced by Zoho SalesIQ Widget in index.html */}
     </>
   );
 };
@@ -54,9 +55,20 @@ const App: React.FC = () => {
           <Route path="/research" element={<Research />} />
           <Route path="/campus" element={<Campus />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Public functional pages */}
           <Route path="/track-bus" element={<BusTracking />} />
           <Route path="/pay-fees" element={<FeePayment />} />
-          <Route path="/portal" element={<StudentPortal />} />
+          
+          {/* Auth & Portals */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/portal/student" element={<StudentPortal />} />
+          <Route path="/portal/faculty" element={<FacultyPortal />} />
+          <Route path="/portal/parent" element={<ParentPortal />} />
+          
+          {/* Redirect old portal route */}
+          <Route path="/portal" element={<Login />} />
+          
           {/* Catch all */}
           <Route path="*" element={<Home />} />
         </Routes>

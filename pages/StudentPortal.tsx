@@ -1,34 +1,48 @@
+
 import React from 'react';
 import { LayoutDashboard, BookOpen, Calendar, CreditCard, User, LogOut, FileText, Bell, Bus } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { MockDatabase } from '../constants';
 
 const StudentPortal: React.FC = () => {
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    MockDatabase.logout();
+    navigate('/login?role=student');
+  };
+
   return (
     <div className="flex min-h-screen bg-slate-50">
       {/* Sidebar */}
       <aside className="w-64 bg-sairam-900 text-slate-300 hidden md:flex flex-col">
         <div className="p-6 border-b border-sairam-800">
            <span className="text-white font-bold text-xl">My Sairam</span>
+           <p className="text-xs text-slate-500 mt-1">Student Dashboard</p>
         </div>
         <nav className="flex-1 p-4 space-y-2">
           <NavItem active icon={LayoutDashboard} label="Dashboard" />
           <NavItem icon={BookOpen} label="Academics & Marks" />
           <NavItem icon={Calendar} label="Timetable" />
-          <NavItem icon={Bus} label="Transport Info" />
-          <NavItem icon={CreditCard} label="Fee Payments" />
+          <Link to="/track-bus" className="flex items-center w-full px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-sairam-800 hover:text-white transition">
+             <Bus size={18} className="mr-3" /> Transport Info
+          </Link>
+          <Link to="/pay-fees" className="flex items-center w-full px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-sairam-800 hover:text-white transition">
+             <CreditCard size={18} className="mr-3" /> Fee Payments
+          </Link>
           <NavItem icon={FileText} label="Certificates" />
         </nav>
         <div className="p-4 border-t border-sairam-800">
-          <button className="flex items-center text-sm hover:text-white transition w-full p-2">
+          <button onClick={handleLogout} className="flex items-center text-sm hover:text-white transition w-full p-2 text-red-400">
             <LogOut size={16} className="mr-3" /> Sign Out
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1 overflow-y-auto">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b border-slate-200 p-4 flex justify-between items-center">
+        <header className="bg-white shadow-sm border-b border-slate-200 p-4 flex justify-between items-center sticky top-0 z-20">
           <div className="flex items-center md:hidden">
              <span className="font-bold text-sairam-900">My Sairam</span>
           </div>

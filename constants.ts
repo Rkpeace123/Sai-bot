@@ -1,4 +1,4 @@
-import { NavItem, NewsItem, BusRoute, FeeType, PlacementStat } from './types';
+import { NavItem, NewsItem, BusRoute, FeeType, PlacementStat, User, Ticket, Event, Notification } from './types';
 import { BookOpen, Users, Trophy, Globe, GraduationCap, Microscope, Lightbulb, Activity } from 'lucide-react';
 
 export const NAV_ITEMS: NavItem[] = [
@@ -62,11 +62,8 @@ export const LATEST_NEWS: NewsItem[] = [
 ];
 
 export const BUS_ROUTES: BusRoute[] = [
-  // West Tambaram / Campus
   { id: '1', routeNumber: 'R-45', driver: 'Ramesh Kumar', phone: '9876543210', status: 'On Time', nextStop: 'Kishkinta Rd', eta: '5 mins', occupancy: 'High', coordinates: { lat: 12.9606, lng: 80.0556 } },
-  // Near Airport
   { id: '2', routeNumber: 'R-12', driver: 'Suresh Babu', phone: '9876543211', status: 'Delayed', nextStop: 'Tirusulam', eta: '25 mins', occupancy: 'Medium', coordinates: { lat: 12.9806, lng: 80.1636 } },
-  // City Center
   { id: '3', routeNumber: 'R-08', driver: 'Muthu Vel', phone: '9876543212', status: 'Arrived', nextStop: 'Adyar Depot', eta: 'Now', occupancy: 'Low', coordinates: { lat: 13.0012, lng: 80.2565 } },
 ];
 
@@ -85,34 +82,16 @@ export const PLACEMENT_DATA: PlacementStat[] = [
 ];
 
 export const RESEARCH_PROJECTS = [
-  {
-    title: "Autonomous Drone Swarm for Agriculture",
-    agency: "DRDO",
-    amount: "₹ 45 Lakhs",
-    status: "Ongoing",
-    pi: "Dr. A. Sharma"
-  },
-  {
-    title: "AI in Healthcare Diagnostics",
-    agency: "ICMR",
-    amount: "₹ 25 Lakhs",
-    status: "Completed",
-    pi: "Dr. B. Raman"
-  },
-  {
-    title: "Sustainable Concrete Materials",
-    agency: "DST",
-    amount: "₹ 30 Lakhs",
-    status: "Ongoing",
-    pi: "Dr. C. Priya"
-  }
+  { title: "Autonomous Drone Swarm", agency: "DRDO", amount: "₹ 45 Lakhs", status: "Ongoing", pi: "Dr. A. Sharma" },
+  { title: "AI in Healthcare", agency: "ICMR", amount: "₹ 25 Lakhs", status: "Completed", pi: "Dr. B. Raman" },
+  { title: "Sustainable Concrete", agency: "DST", amount: "₹ 30 Lakhs", status: "Ongoing", pi: "Dr. C. Priya" }
 ];
 
 export const DEPARTMENT_DATA = {
   id: 'cse',
   name: 'Computer Science & Engineering',
   tagline: 'Innovating the Digital Future',
-  description: 'The Department of CSE is committed to providing world-class education in computing technologies, fostering research, and nurturing innovation.',
+  description: 'The Department of CSE is committed to providing world-class education in computing technologies.',
   stats: [
     { label: 'Students', value: '1200+' },
     { label: 'Faculty', value: '65+' },
@@ -125,13 +104,7 @@ export const DEPARTMENT_DATA = {
     { name: 'Mr. K. Raj', designation: 'Assistant Professor', area: 'Cyber Security' },
     { name: 'Mrs. P. Lakshmi', designation: 'Assistant Professor', area: 'Data Science' },
   ],
-  labs: [
-    'Artificial Intelligence Lab',
-    'Cloud Computing Centre',
-    'IoT & Robotics Lab',
-    'Data Analytics Lab',
-    'Virtual Reality Studio'
-  ]
+  labs: ['AI Lab', 'Cloud Computing Centre', 'IoT Lab', 'Data Analytics Lab', 'VR Studio']
 };
 
 export const FACILITIES = [
@@ -147,3 +120,73 @@ export const ALUMNI_DATA = [
   { name: "Indra Nooyi (Mock)", role: "Former CEO, PepsiCo", batch: "1976", image: "https://picsum.photos/200/200?random=202" },
   { name: "Satya Nadella (Mock)", role: "CEO, Microsoft", batch: "1988", image: "https://picsum.photos/200/200?random=203" }
 ];
+
+// --- MOCK DATABASE CLASS ---
+// This acts as a Singleton to maintain state across pages without a real backend.
+
+class MockDB {
+  private tickets: Ticket[] = [
+    { id: 'TKT-1001', userId: 'STU-001', userName: 'John Doe', type: 'IT Support', subject: 'Wi-Fi not working in Hostel Block A', description: 'Signal strength is very low in room 304.', status: 'In Progress', priority: 'Medium', date: '2023-10-20' },
+    { id: 'TKT-1002', userId: 'STU-001', userName: 'John Doe', type: 'Bonafide', subject: 'Need Bonafide for Passport', description: 'Applying for passport, urgent.', status: 'Resolved', priority: 'High', date: '2023-10-15' },
+    { id: 'TKT-1003', userId: 'PAR-001', userName: 'Mr. Robert Doe', type: 'Transport', subject: 'Bus R-45 Late Arrival', description: 'The bus is consistently 10 mins late at stop.', status: 'Pending', priority: 'Low', date: '2023-10-22' }
+  ];
+
+  private events: Event[] = [
+    { id: 'EVT-001', title: 'AI Summit 2024', date: '2023-11-15', time: '10:00 AM', category: 'Workshop', venue: 'Sigma Auditorium', description: 'A deep dive into Generative AI.', image: 'https://picsum.photos/400/200?random=5', registeredCount: 120 },
+    { id: 'EVT-002', title: 'SaiFest Cultural Night', date: '2023-12-20', time: '05:00 PM', category: 'Cultural', venue: 'Main Ground', description: 'Annual cultural extravaganza.', image: 'https://picsum.photos/400/200?random=6', registeredCount: 450 },
+    { id: 'EVT-003', title: 'National Hackathon', date: '2023-11-05', time: '09:00 AM', category: 'Workshop', venue: 'Innovation Centre', description: '24-hour coding marathon.', image: 'https://picsum.photos/400/200?random=7', registeredCount: 80 }
+  ];
+
+  private currentUser: User | null = null;
+
+  // USER AUTH
+  login(role: string): User {
+    let user: User;
+    switch(role) {
+      case 'admin':
+      case 'faculty':
+        user = { id: 'FAC-001', name: 'Dr. Sarah Smith', email: 'sarah@sairam.edu.in', role: 'faculty' };
+        break;
+      case 'parent':
+        user = { id: 'PAR-001', name: 'Mr. Robert Doe', email: 'robert@gmail.com', role: 'parent' };
+        break;
+      case 'alumni':
+        user = { id: 'ALU-001', name: 'Ms. Priya Raj', email: 'priya@tech.com', role: 'alumni', batch: '2018' } as any;
+        break;
+      default:
+        user = { id: 'STU-001', name: 'John Doe', email: 'john@sairam.edu.in', role: 'student', regNo: '412419104001', dept: 'CSE' };
+    }
+    this.currentUser = user;
+    return user;
+  }
+
+  getCurrentUser() { return this.currentUser; }
+  logout() { this.currentUser = null; }
+
+  // TICKETS
+  getTickets(userId?: string) {
+    if (userId) return this.tickets.filter(t => t.userId === userId);
+    return this.tickets;
+  }
+
+  createTicket(ticket: Omit<Ticket, 'id' | 'date' | 'status'>) {
+    const newTicket: Ticket = {
+      ...ticket,
+      id: `TKT-${Math.floor(Math.random() * 10000)}`,
+      date: new Date().toISOString().split('T')[0],
+      status: 'Pending'
+    };
+    this.tickets.unshift(newTicket);
+    return newTicket;
+  }
+
+  // EVENTS
+  getEvents() { return this.events; }
+
+  registerEvent(eventId: string) {
+    const evt = this.events.find(e => e.id === eventId);
+    if (evt) evt.registeredCount++;
+  }
+}
+
+export const MockDatabase = new MockDB();
